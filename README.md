@@ -29,6 +29,3 @@ cl^2/(pi * AR * e)
 
 where cl is the wing lift coefficient, AR is the aspect ratio, and e is the oswald's efficiency factor. AR in our context is the effective Aspect Ratio. 
 
-### P1 Notes
-The MAC of Duck Duck Goose is 0.2 m. The wingspan is 1.44. The aspect ratio is 7.17.
-
