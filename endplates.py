@@ -26,22 +26,22 @@ def wing_cd0(reynolds, tc, sweep):
     cd0_wing = cf * form_factor * 1.66 # 1.66 is empirical approx of Swet/Sref for subsonic low reynolds aircraft
     return cd0_wing
 
-def endplate_cd0(thickness, height, Sref):
+def endplate_cd0(height, v, l, Sref):
     """Calculate the endplate conribution to zero-lift drag coefficient"""
-    # We use the drag coefficient of a flat plate: 1.28
-    cd_plate = 1.28
-    front_area = thickness * height
-    cd0_endplate = cd_plate * (front_area / Sref) * 2  # multiply by 2 for both endplates
-    return cd0_endplate
+    # Zero lift drag is same as skin friction coefficient for flat plate, reynolds varys with height
+    cf = cf_calc(reynolds(v, l, 1.46e-5))
+    Swet = 2 * height * l  # both sides of the endplate
+    cd0e = cf * (Swet / Sref) * 2.59 # 2.59 is empirical approx of form factor for a flat plate
+    return cd0e
 
 def eff_AR(geo_AR, height, b):
     """Calculate the effective aspect ratio with endplates"""
     return geo_AR * (1 + 1.9 * (height / b))
 
-def total_cd(height, cd0w, cl, e, geo_AR, b, thickness, Sref):
+def total_cd(height, cd0w, cl, e, geo_AR, b, v, l, Sref):
     """Calculate the total drag coefficient with endplate height as variable"""
     eff_ar = eff_AR(geo_AR, height, b)
-    cd0e = endplate_cd0(thickness, height, Sref)
+    cd0e = endplate_cd0(height, v, l, Sref)
     cd_tot = cd0w + cd0e + (cl ** 2) / (math.pi * eff_ar * e)
     return cd_tot
 
