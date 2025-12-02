@@ -38,11 +38,15 @@ def eff_AR(geo_AR, height, b):
     """Calculate the effective aspect ratio with endplates"""
     return geo_AR * (1 + 1.9 * (height / b))
 
-def total_cd(height, cd0w, cl, e, geo_AR, b, v, l, Sref):
+def total_cd_end(height, cd0w, cl, e, geo_AR, b, v, l, Sref):
     """Calculate the total drag coefficient with endplate height as variable"""
     eff_ar = eff_AR(geo_AR, height, b)
     cd0e = endplate_cd0(height, v, l, Sref)
     cd_tot = cd0w + cd0e + (cl ** 2) / (math.pi * eff_ar * e)
     return cd_tot
 
+def total_cd(cd0w, cl, e, geo_AR):
+    """Calculate the total drag coefficient without endplates"""
+    cd_tot = cd0w + (cl ** 2) / (math.pi * geo_AR * e)
+    return cd_tot
  
