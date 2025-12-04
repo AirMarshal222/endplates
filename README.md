@@ -8,7 +8,15 @@ The formula that the script is currently designed to use is a formula developed 
 
 eff_AR = geo_AR * (1 + 1.9*(height/b))
 
-Where height is the endpalte height, b being the wingspan, eff_AR the effective Aspect Ratio, and geo_AR the geometric Aspect Ratio. This formula works up to a height/b of 0.4.
+Where height is the endplate height, b being the wingspan, eff_AR the effective Aspect Ratio, and geo_AR the geometric Aspect Ratio. This formula works up to a height/b of 0.4.
+
+## Schlichting and Truckenbrodt Correlation
+
+This formula was correlated from hoerner's, but assumes an added effect from varying the winglet chord length:
+
+eff_AR = geo_AR * (1 + 0.5*(height/end_chord*(end_chord/wing_chord)^2))
+
+Where height is endplate height, end_chord is the chord length of the endplate, wing_chord the chord length of the wing, and geo_AR the geometric Aspect Ratio. Theoretically, this formula should work for medium to high aspect ratios, but anything in the lower range, one should use Selig's model. 
 
 
 ## Empirical Formula for Low Aspect Ratio Wings
