@@ -16,6 +16,8 @@ e = 0.75 # Oswald efficiency factor
 b = 1.44 # wingspan in meters
 chordw = 0.2 # mac length in meters
 
+lamb = 0.0125  # regularization coefficient
+
 """
 Formulas: 
 
@@ -31,8 +33,8 @@ cd_tot = cd0w + cd0e + (cl^2)/(pi*eff_AR*e)
 
 def main():
     cd0w = end.wing_cd0(reynolds, tc, sweep) # wing zero-lift drag coefficient
-    constants_tuple1 = (cd0w, cl, e, geo_AR, b, v, chordw, Sref)
-    constants_tuple2 = (cd0w, cl, e, geo_AR, b, v, chordw, Sref)
+    constants_tuple1 = (cd0w, cl, e, geo_AR, b, v, chordw, Sref, lamb)
+    constants_tuple2 = (cd0w, cl, e, geo_AR, b, v, chordw, Sref, lamb)
 
     # Minimize Objective Function
     resulte1 = minimize_scalar(end.total_cd_end_1, args=constants_tuple1, bounds=(0, 0.5), method='bounded')

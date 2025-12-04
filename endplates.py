@@ -42,19 +42,21 @@ def eff_AR2(geo_AR, height, chorde, chordw):
     """Calculate the effective aspect ratio with endplates with endplate chord also as a variable"""
     return geo_AR * (1 + 0.5 * (height / chorde * (chorde / chordw)**2))
 
-def total_cd_end_1(height, cd0w, cl, e, geo_AR, b, v, chordw, Sref):
+def total_cd_end_1(height, cd0w, cl, e, geo_AR, b, v, chordw, Sref, lamb):
     """Calculate the total drag coefficient with endplate height as variable"""
+    # The lamb times (height^2 + chord^2) term is a regularization term to avoid extremely large endplate sizes
     eff_ar = eff_AR1(geo_AR, height, b)
     cd0e = endplate_cd0(height, v, chordw, Sref)
-    cd_tot = cd0w + cd0e + (cl ** 2) / (math.pi * eff_ar * e)
+    cd_tot = cd0w + cd0e + (cl ** 2) / (math.pi * eff_ar * e) + lamb * height**2
     return cd_tot
 
-def total_cd_end_2(x, cd0w, cl, e, geo_AR, b, v, chordw, Sref):
+def total_cd_end_2(x, cd0w, cl, e, geo_AR, b, v, chordw, Sref, lamb):
     """Calculate the total drag coefficient with endplate height and chord as variable"""
+    # The lamb times (height^2 + chord^2) term is a regularization term to avoid extremely large endplate sizes
     height, chorde = x
     eff_ar = eff_AR2(geo_AR, height, chorde, chordw)
     cd0e = endplate_cd0(height, v, chorde, Sref)
-    cd_tot = cd0w + cd0e + (cl ** 2) / (math.pi * eff_ar * e)
+    cd_tot = cd0w + cd0e + (cl ** 2) / (math.pi * eff_ar * e) + lamb * (height**2 + chorde**2)
     return cd_tot
 
 def total_cd(cd0w, cl, e, geo_AR):
