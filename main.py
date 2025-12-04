@@ -1,5 +1,5 @@
 import endplates as end
-from scipy.optimize import minimize_scalar
+from scipy.optimize import minimize_scalar, minimize
 import numpy as np
 
 # Constants
@@ -12,9 +12,9 @@ thickness = 0.001  # endplate thickness in meters
 Sref = 0.29  # reference area in square meters
 cl = 0.49 # lift coefficient
 geo_AR = 7.17 # geometric aspect ratio
-e = 1.0 # Oswald efficiency factor
+e = 0.75 # Oswald efficiency factor
 b = 1.44 # wingspan in meters
-l = 0.215 # endplate length in meters
+chordw = 0.2 # mac length in meters
 
 """
 Formulas: 
@@ -31,15 +31,23 @@ cd_tot = cd0w + cd0e + (cl^2)/(pi*eff_AR*e)
 
 def main():
     cd0w = end.wing_cd0(reynolds, tc, sweep) # wing zero-lift drag coefficient
-    constants_tuple = (cd0w, cl, e, geo_AR, b, v, l, Sref)
+    constants_tuple1 = (cd0w, cl, e, geo_AR, b, v, chordw, Sref)
+    constants_tuple2 = (cd0w, cl, e, geo_AR, b, v, chordw, Sref)
 
     # Minimize Objective Function
-    resulte = minimize_scalar(end.total_cd_end, args=constants_tuple, bounds=(0, 100), method='bounded')
+    resulte1 = minimize_scalar(end.total_cd_end_1, args=constants_tuple1, bounds=(0, 0.2), method='bounded')
+    resulte2 = minimize(end.total_cd_end_2, x0=[0.1, 0.1], args=constants_tuple2, bounds=[(0, 0.15), (0.01, 1.0)], method='L-BFGS-B')
     result = end.total_cd(cd0w, cl, e, geo_AR)
 
-    print(f"Optimization successful: {resulte.success}")
-    print(f"Minimum height: {resulte.x:.4f}")
-    print(f"Total drag coefficient with endplates: {resulte.fun:.4f}")
+    print(f"Method 1 Optimization successful: {resulte1.success}")
+    print(f"Minimum height: {resulte1.x:.4f}")
+    print(f"Total drag coefficient with endplates: {resulte1.fun:.4f}")
+    print()
+    print(f"Method 2 Optimization successful: {resulte2.success}")
+    print(f"Minimum height: {resulte2.x[0]:.4f}")
+    print(f"Minimum chord: {resulte2.x[1]:.4f}")
+    print(f"Total drag coefficient with endplates: {resulte2.fun:.4f}")
+    print()
     print(f"Total drag coefficient without endplates: {result:.4f}")
 
 
