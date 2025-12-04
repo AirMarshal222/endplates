@@ -35,8 +35,8 @@ def main():
     constants_tuple2 = (cd0w, cl, e, geo_AR, b, v, chordw, Sref)
 
     # Minimize Objective Function
-    resulte1 = minimize_scalar(end.total_cd_end_1, args=constants_tuple1, bounds=(0, 0.2), method='bounded')
-    resulte2 = minimize(end.total_cd_end_2, x0=[0.1, 0.1], args=constants_tuple2, bounds=[(0, 0.15), (0.01, 1.0)], method='L-BFGS-B')
+    resulte1 = minimize_scalar(end.total_cd_end_1, args=constants_tuple1, bounds=(0, 0.5), method='bounded')
+    resulte2 = minimize(end.total_cd_end_2, x0=[0.1, 0.1], args=constants_tuple2, bounds=[(0, 0.5), (0.01, 1.0)], method='L-BFGS-B')
     result = end.total_cd(cd0w, cl, e, geo_AR)
 
     print(f"Method 1 Optimization successful: {resulte1.success}")
