@@ -7,12 +7,7 @@ def reynolds(v, l, nu):
 
 def cf_calc(reynolds):
     """Calculate the skin friction coefficient based on Reynolds number."""
-    if reynolds < 5e5:
-        # Laminar flow
-        cf = 1.328 / (reynolds ** 0.5)
-    else:
-        # Turbulent flow
-        cf = 0.455 / (math.log10(reynolds) ** 2.58)
+    cf = 0.455 / (math.log10(reynolds) ** 2.58)
     return cf
 
 def wing_formfactor(tc, sweep):
@@ -31,7 +26,7 @@ def endplate_cd0(height, v, l, Sref):
     # Zero lift drag is same as skin friction coefficient for flat plate, reynolds varys with height
     cf = cf_calc(reynolds(v, l, 1.46e-5))
     Swet = 2 * height * l  # both sides of the endplate
-    cd0e = cf * (Swet / Sref) * 2.59 # 2.59 is empirical approx of form factor for a flat plate
+    cd0e = cf * (Swet / Sref) * 2.59 * 2 # 2.59 is empirical approx of form factor for a flat plate
     return cd0e
 
 def eff_AR1(geo_AR, height, b):
