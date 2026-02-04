@@ -6,7 +6,7 @@ The purpose of this script is to conduct endplate optimization using varying met
 
 The formula that the script is currently designed to use is a formula developed by Hoerner:
 
-eff_AR = geo_AR * (1 + 1.9*(height/b))
+$AR_{eff} = AR_{geo} \times (1 + 1.9 \times \frac{h}{b})$
 
 Where height is the endplate height, b being the wingspan, eff_AR the effective Aspect Ratio, and geo_AR the geometric Aspect Ratio. This formula works up to a height/b of 0.4.
 
